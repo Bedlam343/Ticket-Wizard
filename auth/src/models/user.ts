@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Password } from "../services/password";
 
 // interface describing properties required to create a new User
 interface UserAttrs {
@@ -26,6 +27,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+});
+
+// middleware function in mongoose (executed before saving a document)
+userSchema.pre("save", async function (done) {
+  // creating a new user or modifying the password
+  if (this.isModified("password")) {
+    const hashed = await Password.toHash(this.get("password"));
+    this.set("password", hashed);
+  }
+
+  done(); // done is a callback function
 });
 
 // custom function built into the model (type checking for TS)
