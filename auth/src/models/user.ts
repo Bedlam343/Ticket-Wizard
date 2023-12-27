@@ -18,16 +18,29 @@ interface UserDoc extends mongoose.Document {
   password: string;
 }
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String, // This is a JS String constructor
-    required: true,
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String, // This is a JS String constructor
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    // help mongoose turn user document into JSON
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password; // remove password from JSON
+        delete ret.__v; // remove version key from JSON
+      },
+    },
+  }
+);
 
 // middleware function in mongoose (executed before saving a document)
 userSchema.pre("save", async function (done) {
