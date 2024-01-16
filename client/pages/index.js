@@ -10,6 +10,7 @@ const LandingPage = ({ currentUser }) => {
 
 // NEXT.js will call this function while rendering the app on the server
 LandingPage.getInitialProps = async (context) => {
+  console.log("LANDING PAGE");
   const client = buildClient(context);
   const { data } = await client.get("/api/users/currentuser");
   return data;
