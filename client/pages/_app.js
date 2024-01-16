@@ -2,8 +2,13 @@ import "bootstrap/dist/css/bootstrap.css";
 import buildClient from "../api/build-client";
 
 // Next wraps all pages with this custom component as opposed to its own default component
-const AppComponent = ({ Component, pageProps }) => {
-  return <Component {...pageProps} />;
+const AppComponent = ({ Component, pageProps, currentUser }) => {
+  return (
+    <div>
+      <h1>{currentUser.email}</h1>
+      <Component {...pageProps} />
+    </div>
+  );
 };
 
 // NEXT.js will call this function while rendering the app on the server
@@ -17,9 +22,11 @@ AppComponent.getInitialProps = async (appContext) => {
     // call getInitalProps of child component
     pageProps = await appContext.Component.getInitialProps(appContext.ctx);
   }
-  console.log(pageProps);
 
-  return data;
+  return {
+    pageProps,
+    currentUser: data.currentUser,
+  };
 };
 
 export default AppComponent;
