@@ -24,3 +24,11 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+    - image: chakhmah/tickets
+      context: tickets # folder than contains code for this image
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
