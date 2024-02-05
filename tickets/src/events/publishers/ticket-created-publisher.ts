@@ -4,6 +4,6 @@ import {
   TicketCreatedEvent,
 } from "@chakhmah-tickets/common";
 
-export class TickedCreatedPublisher extends Publisher<TicketCreatedEvent> {
+export class TicketCreatedPublisher extends Publisher<TicketCreatedEvent> {
   readonly subject = Subjects.TicketCreated;
 }
