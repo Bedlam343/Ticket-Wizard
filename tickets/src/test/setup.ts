@@ -8,6 +8,9 @@ declare global {
   var signin: () => string[];
 }
 
+// jest will redirect import to __mocks__/nats-wrapper.ts
+jest.mock("../nats-wrapper");
+
 let mongo: any;
 
 // hook function (executed before all tests started to be executed)
@@ -22,6 +25,8 @@ beforeAll(async () => {
 
 // runs before each test
 beforeEach(async () => {
+  jest.clearAllMocks();
+
   // delete all collections
   const collections = await mongoose.connection.db.collections();
 
