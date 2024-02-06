@@ -32,3 +32,11 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: chakhmah/orders
+      context: orders # folder than contains code for this image
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
