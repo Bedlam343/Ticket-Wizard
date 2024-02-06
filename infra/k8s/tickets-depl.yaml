@@ -16,6 +16,14 @@ spec:
         - name: tickets
           image: chakhmah/tickets
           env: # env variables we want have access to inside container
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name # use name of the pod as client id
+            - name: NATS_URL
+              value: "http://nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: ticketing
             - name: MONGO_URI
               value: "mongodb://tickets-mongo-srv:27017/tickets" # tickets is the name of the database
             - name: JWT_KEY
