@@ -6,6 +6,7 @@ import {
 } from "@chakhmah-tickets/common";
 import { queueGroupName } from "./queue-group-name";
 import { Ticket } from "../../models/ticket";
+import { TicketUpdatedPublisher } from "../publishers/ticket-updated-publisher";
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   readonly subject = Subjects.OrderCreated;
@@ -20,6 +21,15 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 
     ticket.set({ orderId: data.id });
     await ticket.save();
+
+    await new TicketUpdatedPublisher(this.client).publish({
+      id: ticket.id,
+      version: ticket.version,
+      title: ticket.title,
+      userId: ticket.userId,
+      price: ticket.price,
+      orderId: ticket.orderId,
+    });
 
     msg.ack();
   }
